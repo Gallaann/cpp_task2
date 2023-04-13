@@ -1,4 +1,4 @@
-#include "include/StreamingTextEditor.h"
+#include "StreamingTextEditor.h"
 
 int main(int argc, char* argv[]) {
     StreamingTextEditor::TextEditor textEditor;
