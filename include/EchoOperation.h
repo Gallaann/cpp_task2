@@ -11,7 +11,11 @@
 class EchoOperation : public IOperation {
 public:
     void ProcessLine(const std::string &str) override {
-        m_nextOp->ProcessLine(m_string);
+        if (m_nextOp){
+            m_nextOp->ProcessLine(m_string);
+            return;
+        }
+        std::cout << m_string << std::endl;
     }
 
     void HandleEndOfInput() override {
@@ -20,7 +24,7 @@ public:
             m_nextOp->HandleEndOfInput();
             return;
         }
-        std::cout << m_string;
+        std::cout << m_string << std::endl;
     }
 
     void SetNextOperation(std::shared_ptr<IOperation> nextOp) override {
