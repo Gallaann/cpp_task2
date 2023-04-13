@@ -15,12 +15,12 @@ public:
     }
 
     void HandleEndOfInput() override {
-        std::cout << m_string;
-
         if (m_nextOp){
+            m_nextOp->ProcessLine(m_string);
             m_nextOp->HandleEndOfInput();
             return;
         }
+        std::cout << m_string;
     }
 
     void SetNextOperation(std::shared_ptr<IOperation> nextOp) override {
