@@ -15,14 +15,15 @@ public:
     }
 
     void HandleEndOfInput() override {
+        std::cout << m_string;
+
         if (m_nextOp){
             m_nextOp->HandleEndOfInput();
             return;
         }
-        std::cout << m_string;
     }
 
-    void SetNextOperation(IOperation *nextOp) override {
+    void SetNextOperation(std::shared_ptr<IOperation> nextOp) override {
         m_nextOp = nextOp;
     }
 
@@ -30,5 +31,5 @@ public:
 
 private:
     std::string m_string;
-    IOperation *m_nextOp;
+    std::shared_ptr<IOperation> m_nextOp;
 };

@@ -37,7 +37,7 @@ public:
         }
     }
 
-    void SetNextOperation(IOperation *nextOp) override {
+    void SetNextOperation(std::shared_ptr<IOperation> nextOp) override {
         m_nextOp = nextOp;
     }
 
@@ -45,5 +45,5 @@ public:
 
 private:
     std::string m_fileName;
-    IOperation *m_nextOp;
+    std::shared_ptr<IOperation> m_nextOp;
 };
