@@ -6,5 +6,5 @@
 
 TEST(TEST, TEST){
     bool testing = true;
-    EXPECT_TRUE(testing)
+    EXPECT_TRUE(testing);
 }
