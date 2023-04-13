@@ -1,0 +1,138 @@
+name: CI
+
+on:
+  push:
+    branches: [ develop ]
+
+env:
+  BUILD_TYPE: Debug
+
+jobs:
+  cppcheck:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: run cppcheck
+        uses: deep5050/cppcheck-action@main
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN}}
+          std: c++17
+
+  clang-tidy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: run clang-tidy
+        uses: cpp-linter/cpp-linter-action@v2.4.2
+        with:
+          style: ''
+          extra-args: -std=c++17
+
+  clang-format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: run clang-tidy
+        uses: cpp-linter/cpp-linter-action@v2.4.2
+        with:
+          style: file
+          extra-args: -std=c++17
+          tidy-checks: '-*'
+
+  build:
+    needs: [ cppcheck, clang-tidy, clang-format]
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: build
+        run: |
+          cmake -B ${{ github.workflow }}/build
+          cmake --build ${{ github.workflow }}/build
+          ls
+
+  build_with_tests:
+    needs: [ build ]
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: build
+        run: |
+          cmake -DBUILD_TESTS=ON -B ${{ github.workflow }}/build
+          cmake --build ${{ github.workflow }}/build
+          ls
+
+      - name: upload-artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: test_build_artifact
+          path: ${{ github.workflow }}/build/
+
+  run_tests:
+    needs: [build_with_tests]
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: download build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: test_build_artifact
+          path: ${{ github.workflow }}/build
+
+      - name: run tests
+        run: |
+          cd ${{ github.workflow }}/build/tests
+          chmod +x finder_test
+          ./finder_test
+
+      - name: download lcov
+        run: |
+          sudo apt update
+          sudo apt install lcov
+
+      - name: coverage
+        run: |
+          cd ${{ github.workflow }}/build/tests/CMakeFiles/finder_test.dir
+          lcov -t "finder_test" -o coverage.info -c -d .
+          genhtml -o report coverage.info
+
+
+#  build_with_valgrind:
+#    needs: [ build ]
+#
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: checkout
+#        uses: actions/checkout@v3
+#
+#      - name: build
+#        run:
+#          bash cmake -DWITH_VALGRIND=On
+#          make
+#
+#      - name: upload-artifacts
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: my-artifact-valgrind
+#          path: # some artifacts ${{ github.workflow }} ${{ github.workspace }}
