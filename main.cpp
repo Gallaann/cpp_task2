@@ -1,4 +1,4 @@
-#include "include/StreaminTextEditor.h"
+#include "include/StreamingTextEditor.h"
 
 int main(int argc, char* argv[]) {
     StreamingTextEditor::TextEditor bebra;

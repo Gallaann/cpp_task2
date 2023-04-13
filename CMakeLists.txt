@@ -3,4 +3,4 @@ project(Task2)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Task2 main.cpp include/IOperation.h include/GrepOperation.h include/EchoOperation.h include/CatOperation.h)
+add_executable(Task2 main.cpp include/IOperation.h include/GrepOperation.h include/EchoOperation.h include/CatOperation.h include/StreamingTextEditor.h src/StreamingTextEditor.cpp)

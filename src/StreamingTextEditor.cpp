@@ -2,7 +2,7 @@
 // Created by gallaann on 13.04.23.
 //
 
-#include "../include/StreaminTextEditor.h"
+#include "../include/StreamingTextEditor.h"
 
 #include "sstream"
 #include "string"
