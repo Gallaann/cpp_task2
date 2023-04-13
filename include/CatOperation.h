@@ -12,11 +12,11 @@
 class CatOperation : public IOperation {
 public:
     void ProcessLine(const std::string &str) override {
-        std::cout << str << std::endl;
         if (m_nextOp) {
             m_nextOp->ProcessLine(str);
             return;
         }
+        std::cout << str << std::endl;
     }
 
     void HandleEndOfInput() override {
@@ -31,9 +31,9 @@ public:
         while (getline(input, currentLine)) {
             if (m_nextOp) {
                 m_nextOp->ProcessLine(currentLine);
-                return;
+            }else {
+                std::cout << currentLine << std::endl;
             }
-            std::cout << currentLine << std::endl;
         }
 
         if (m_nextOp) {
