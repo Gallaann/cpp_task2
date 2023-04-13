@@ -2,10 +2,10 @@
 // Created by gallaann on 13.04.23.
 //
 
-#include "../include/StreamingTextEditor.h"
+#include "StreamingTextEditor.h"
 
-#include "sstream"
-#include "string"
+#include <sstream>
+#include <string>
 #include <iostream>
 #include <vector>
 #include <memory>
@@ -87,6 +87,8 @@ namespace StreamingTextEditor {
         for (const auto &operation: operations) {
             addToStream(getCurrentOperation(operation));
         }
+
+        output();
 
         return SUCCESS;
     }
