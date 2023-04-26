@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "../include/CatOperation.h"
-#include "../include/EchoOperation.h"
-#include "../include/GrepOperation.h"
+#include "CatOperation.h"
+#include "EchoOperation.h"
+#include "GrepOperation.h"
 
 #include <vector>
 
