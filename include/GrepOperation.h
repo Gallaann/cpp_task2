@@ -9,13 +9,14 @@
 class GrepOperation : public IOperation {
 public:
     void ProcessLine(const std::string &str) override {
-        if (str.find(m_subString) != std::string::npos) {
-            if (m_nextOp) {
-                m_nextOp->ProcessLine(m_subString);
-                return;
-            }
-            std::cout << str;
+        if (str.find(m_subString) == std::string::npos) {
+            return;
         }
+        if (m_nextOp) {
+            m_nextOp->ProcessLine(str);
+            return;
+        }
+        std::cout << str;
     }
 
     void HandleEndOfInput() override {
