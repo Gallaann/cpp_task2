@@ -83,3 +83,51 @@ TEST(CatOperationTest, StringOnInput) {
 
     EXPECT_EQ(actual_output, expected_output);
 }
+
+
+TEST(EchoOperationTest, OutputTest) {
+    std::ostringstream output;
+    std::streambuf* coutBuffer = std::cout.rdbuf();
+    std::cout.rdbuf(output.rdbuf());
+    std::string expectedOutput = "This is a test string\n";
+
+    std::shared_ptr<IOperation> firstOperation = std::make_shared<EchoOperation>("This is a test string");
+    firstOperation->HandleEndOfInput();
+
+    std::cout.rdbuf(coutBuffer);
+    std::string actualOutput = output.str();
+
+    EXPECT_EQ(actualOutput, expectedOutput);
+}
+
+TEST(EchoOperationTest, StringOnInput) {
+    std::ostringstream output;
+    std::streambuf* coutBuffer = std::cout.rdbuf();
+    std::cout.rdbuf(output.rdbuf());
+    std::string expectedOutput = "";
+
+    std::shared_ptr<IOperation> firstOperation = std::make_shared<EchoOperation>("This is a test string");
+    firstOperation->ProcessLine("ignored string");
+
+    std::cout.rdbuf(coutBuffer);
+    std::string actualOutput = output.str();
+
+    EXPECT_EQ(actualOutput, expectedOutput);
+}
+
+TEST(EchoOperationTest, TwoStringsInARow) {
+    std::ostringstream output;
+    std::streambuf* coutBuffer = std::cout.rdbuf();
+    std::cout.rdbuf(output.rdbuf());
+    std::string expectedOutput = "This is a second test string\n";
+
+    std::shared_ptr<IOperation> firstOperation = std::make_shared<EchoOperation>("This is a first test string");
+    std::shared_ptr<IOperation> secondOperation = std::make_shared<EchoOperation>("This is a second test string");
+    firstOperation->SetNextOperation(secondOperation);
+    firstOperation->HandleEndOfInput();
+
+    std::cout.rdbuf(coutBuffer);
+    std::string actualOutput = output.str();
+
+    EXPECT_EQ(actualOutput, expectedOutput);
+}
