@@ -101,8 +101,10 @@ jobs:
 
       - name: move txt files
         run: |
-          mv ${{ github.workflow }}/cpp_task2/tests/test.txt ${{ github.workflow }}/build/tests/
-          mv ${{ github.workflow }}/cpp_task2/tests/test_with_line_breaks.txt ${{ github.workflow }}/build/tests/
+          cd ${{ github.workflow }}/cpp_task2
+          ls
+#          mv ${{ github.workflow }}/cpp_task2/tests/test.txt ${{ github.workflow }}/build/tests/
+#          mv ${{ github.workflow }}/cpp_task2/tests/test_with_line_breaks.txt ${{ github.workflow }}/build/tests/
 
       - name: run tests
         run: |
