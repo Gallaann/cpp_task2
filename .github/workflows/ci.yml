@@ -99,13 +99,6 @@ jobs:
           name: test_build_artifact
           path: ${{ github.workflow }}/build
 
-      - name: move txt files
-        run: |
-          cd ${{ github.workflow }}/cpp_task2
-          ls
-#          mv ${{ github.workflow }}/cpp_task2/tests/test.txt ${{ github.workflow }}/build/tests/
-#          mv ${{ github.workflow }}/cpp_task2/tests/test_with_line_breaks.txt ${{ github.workflow }}/build/tests/
-
       - name: run tests
         run: |
           cd ${{ github.workflow }}/build/tests/
