@@ -15,7 +15,6 @@ public:
             m_nextOp->ProcessLine(m_string);
             return;
         }
-        std::cout << m_string << std::endl;
     }
 
     void HandleEndOfInput() override {
