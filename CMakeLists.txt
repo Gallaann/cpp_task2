@@ -54,5 +54,3 @@ if (BUILD_TESTS)
 
     add_subdirectory(tests)
 endif ()
-
-#include/IOperation.h include/GrepOperation.h include/EchoOperation.h include/CatOperation.h include/StreamingTextEditor.h src/StreamingTextEditor.cpp)
