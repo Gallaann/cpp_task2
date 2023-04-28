@@ -15,9 +15,6 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
 
-      - name: test
-        run: ls
-
       - name: run cppcheck
         uses: deep5050/cppcheck-action@main
         with:
@@ -104,7 +101,12 @@ jobs:
 
       - name: run tests
         run: |
-          cd ${{ github.workflow }}/build/tests
+          cd ${{ github.workflow }}
+          ls
+          cd build/
+          ls
+          cd tests/
+          ls
           chmod +x text_editor_test
           ./text_editor_test
 
