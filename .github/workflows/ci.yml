@@ -101,8 +101,9 @@ jobs:
 
       - name: run tests
         run: |
-          cd ${{ github.workflow }}/build/tests
+          cd ${{ github.workflow }}
           ls
+          cd ${{ github.workflow }}/build/tests
           chmod +x text_editor_test
           ./text_editor_test
 
