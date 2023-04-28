@@ -131,3 +131,83 @@ TEST(EchoOperationTest, TwoStringsInARow) {
 
     EXPECT_EQ(actualOutput, expectedOutput);
 }
+
+
+TEST(GrepOperationTest, NoOperationsBeforeGrep) {
+    std::ostringstream output;
+    std::streambuf* coutBuffer = std::cout.rdbuf();
+    std::cout.rdbuf(output.rdbuf());
+    std::string expectedOutput = "";
+
+    std::shared_ptr<IOperation> firstOperation = std::make_shared<GrepOperation>("This is a test string");
+    firstOperation->HandleEndOfInput();
+
+    std::cout.rdbuf(coutBuffer);
+    std::string actualOutput = output.str();
+
+    EXPECT_EQ(actualOutput, expectedOutput);
+}
+
+TEST(GrepOperationTest, ExistingSubstring) {
+    std::ostringstream output;
+    std::streambuf* coutBuffer = std::cout.rdbuf();
+    std::cout.rdbuf(output.rdbuf());
+    std::string expectedOutput = "This is a test string";
+
+    std::shared_ptr<IOperation> firstOperation = std::make_shared<GrepOperation>("test");
+    firstOperation->ProcessLine("This is a test string");
+
+    std::cout.rdbuf(coutBuffer);
+    std::string actualOutput = output.str();
+
+    EXPECT_EQ(actualOutput, expectedOutput);
+}
+
+TEST(GrepOperationTest, NonexistentSubstring) {
+    std::ostringstream output;
+    std::streambuf* coutBuffer = std::cout.rdbuf();
+    std::cout.rdbuf(output.rdbuf());
+    std::string expectedOutput = "";
+
+    std::shared_ptr<IOperation> firstOperation = std::make_shared<GrepOperation>("non-existent substring");
+    firstOperation->ProcessLine("This is a test string");
+
+    std::cout.rdbuf(coutBuffer);
+    std::string actualOutput = output.str();
+
+    EXPECT_EQ(actualOutput, expectedOutput);
+}
+
+TEST(GrepOperationTest, TwoGrepsInARowWithMatchingSubstrings) {
+    std::ostringstream output;
+    std::streambuf* coutBuffer = std::cout.rdbuf();
+    std::cout.rdbuf(output.rdbuf());
+    std::string expectedOutput = "This is a test string with first substring and second substring";
+
+    std::shared_ptr<IOperation> firstOperation = std::make_shared<GrepOperation>("first substring");
+    std::shared_ptr<IOperation> secondOperation = std::make_shared<GrepOperation>("second substring");
+    firstOperation->SetNextOperation(secondOperation);
+    firstOperation->ProcessLine("This is a test string with first substring and second substring");
+
+    std::cout.rdbuf(coutBuffer);
+    std::string actualOutput = output.str();
+
+    EXPECT_EQ(actualOutput, expectedOutput);
+}
+
+TEST(GrepOperationTest, TwoGrepsInARowWithoutMatchingSubstrings) {
+    std::ostringstream output;
+    std::streambuf* coutBuffer = std::cout.rdbuf();
+    std::cout.rdbuf(output.rdbuf());
+    std::string expectedOutput = "";
+
+    std::shared_ptr<IOperation> firstOperation = std::make_shared<GrepOperation>("first substring");
+    std::shared_ptr<IOperation> secondOperation = std::make_shared<GrepOperation>("second substring");
+    firstOperation->SetNextOperation(secondOperation);
+    firstOperation->ProcessLine("This is a test string only with first substring");
+
+    std::cout.rdbuf(coutBuffer);
+    std::string actualOutput = output.str();
+
+    EXPECT_EQ(actualOutput, expectedOutput);
+}
